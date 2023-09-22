@@ -1,29 +1,39 @@
-import {Inject, Injectable} from '@nestjs/common';
-import {
-  CreateShiftEntryBridgingDto,
-} from './dto/create-shift-entry-bridging.dto';
-import {
-  UpdateShiftEntryBridgingDto,
-} from './dto/update-shift-entry-bridging.dto';
-import {ShiftEntryBridging} from './entities/shift-entry-bridging.entity';
-import {Repository} from 'typeorm';
-import {InjectRepository} from '@nestjs/typeorm';
-import {UserService} from '../user/user.service';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { UserService } from '../user/user.service';
+import { CreateShiftEntryBridgingDto } from './dto/create-shift-entry-bridging.dto';
+import { UpdateShiftEntryBridgingDto } from './dto/update-shift-entry-bridging.dto';
+import { ShiftEntryBridging } from './entities/shift-entry-bridging.entity';
 
 @Injectable()
 export class ShiftEntryBridgingService {
   constructor(
-    @InjectRepository(ShiftEntryBridging) private readonly shiftEntryBridgingRepository: Repository<ShiftEntryBridging>,
+    @InjectRepository(ShiftEntryBridging)
+    private readonly shiftEntryBridgingRepository: Repository<ShiftEntryBridging>,
     @Inject(UserService) private readonly userSerivice: UserService,
   ) {}
 
-  async create(createShiftEntryBridgingDto: CreateShiftEntryBridgingDto): Promise<ShiftEntryBridging> {
+  async create(
+    createShiftEntryBridgingDto: CreateShiftEntryBridgingDto,
+  ): Promise<ShiftEntryBridging> {
     const newShiftEntry = new ShiftEntryBridging();
     newShiftEntry.entry_time = createShiftEntryBridgingDto.entry_time;
-    await this.userSerivice.findOne(createShiftEntryBridgingDto.id)
-      .then(v => newShiftEntry.user = v)
-      .catch(e => console.log(e));
-    return this.shiftEntryBridgingRepository.save(newShiftEntry);
+  
+    try {
+      const user = await this.userSerivice.findOne(createShiftEntryBridgingDto.user.employee_id);
+  
+      if (!user) {
+        throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+      }
+  
+      newShiftEntry.user = user;
+  
+      return this.shiftEntryBridgingRepository.save(newShiftEntry);
+    } catch (error) {
+      // Handle errors here
+      throw new HttpException('Failed to create shift entry', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   async findAll(): Promise<ShiftEntryBridging[]> {
@@ -34,11 +44,13 @@ export class ShiftEntryBridgingService {
     return this.shiftEntryBridgingRepository.findOneBy({ id });
   }
 
-  async update(id: number,
+  async update(
+    id: number,
     updateShiftEntryBridgingDto: UpdateShiftEntryBridgingDto,
   ): Promise<ShiftEntryBridging | undefined> {
     console.log(updateShiftEntryBridgingDto);
-    await this.shiftEntryBridgingRepository.update(id,
+    await this.shiftEntryBridgingRepository.update(
+      id,
       updateShiftEntryBridgingDto,
     );
     return this.shiftEntryBridgingRepository.findOneBy({ id });

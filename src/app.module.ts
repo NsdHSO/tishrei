@@ -6,6 +6,7 @@ import { configService } from './config.service';
 import { UserModule } from './user/user.module';
 import { PermissionModule } from './permission/permission.module';
 import { ShiftEntryBridgingModule } from './shift-entry-bridging/shift-entry-bridging.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports : [
@@ -13,6 +14,7 @@ import { ShiftEntryBridgingModule } from './shift-entry-bridging/shift-entry-bri
     UserModule,
     PermissionModule,
     ShiftEntryBridgingModule,
+    AuthModule,
   ],
   controllers : [AppController],
   providers : [AppService],
