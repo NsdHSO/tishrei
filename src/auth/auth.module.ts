@@ -17,7 +17,7 @@ import { LocalStrategy } from './strageties/local-strategy';
     UserModule,
     JwtModule.register({
       secret: `${process.env.ACCESS_TOKEN_SECRET}`,
-      signOptions: { expiresIn: '10s' },
+      signOptions: { expiresIn: '1d' },
     }),
   ],
 })

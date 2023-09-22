@@ -130,4 +130,7 @@ export class User {
   async hashPasword() {
     this.password = await bcrypt.hash(this.password, 10);
   }
+
+  @Column()
+  refreshToken: string;
 }
