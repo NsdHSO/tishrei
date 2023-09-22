@@ -17,7 +17,7 @@ export class ShiftEntryBridgingController {
   async create(@Body() createShiftEntryBridgingDto: CreateShiftEntryBridgingDto) {
     try {
       // Save the new ShiftEntryBridging entity to the database
-      this.shiftEntryBridgingService.create(createShiftEntryBridgingDto)
+      return this.shiftEntryBridgingService.create(createShiftEntryBridgingDto)
         .then(value => {
           return {
             entry_time : value.entry_time,

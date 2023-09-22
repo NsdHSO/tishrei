@@ -10,4 +10,6 @@ export class ShiftEntryBridging {
   }) entry_time: Date;
   @ManyToOne(() => User, (user) => user.shiftEntries)
   user: User;
+  @Column({ type: 'boolean', default: false })
+  isInStore: boolean;
 }
