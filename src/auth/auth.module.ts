@@ -6,7 +6,6 @@ import { UserModule } from 'src/user/user.module';
 import { UserService } from 'src/user/user.service';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { RefreshTokenGuard } from './gurads/refresh-jwt.guard';
 import { JwtStrategy } from './strageties/jwt-strategy';
 import { LocalStrategy } from './strageties/local-strategy';
 
@@ -15,7 +14,6 @@ import { LocalStrategy } from './strageties/local-strategy';
   providers: [
     AuthService,
     JwtStrategy,
-    RefreshTokenGuard,
     UserService,
     LocalStrategy,
   ],

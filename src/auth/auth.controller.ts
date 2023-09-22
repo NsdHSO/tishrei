@@ -25,7 +25,7 @@ export class AuthController {
   @UseGuards(RefreshTokenGuard)
   @Get('refresh')
   async refresh(@Request() request) {
-    return this.authService.refreshToken(request);
+    return this.authService.refreshToken(request.user);
     
   }
 }
