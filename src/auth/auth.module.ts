@@ -6,12 +6,19 @@ import { UserModule } from 'src/user/user.module';
 import { UserService } from 'src/user/user.service';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
+import { RefreshTokenGuard } from './gurads/refresh-jwt.guard';
 import { JwtStrategy } from './strageties/jwt-strategy';
 import { LocalStrategy } from './strageties/local-strategy';
 
 @Module({
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, UserService, LocalStrategy],
+  providers: [
+    AuthService,
+    JwtStrategy,
+    RefreshTokenGuard,
+    UserService,
+    LocalStrategy,
+  ],
   imports: [
     TypeOrmModule.forFeature([User]),
     UserModule,
